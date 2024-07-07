@@ -1,0 +1,72 @@
+--instalar TypeScript
+yarn add typescript -D  
+yarn add express
+yarn @types/express -D --para sugerir com o cmd+space
+npm install --save-dev @types/node
+npm install --save-dev @types/express
+
+
+--inicializar o TypeScript no pjt
+yarn tsc --init
+
+--para poder iniciar o prjeto com typescript
+yarn add ts-node-dev -D
+
+--após, criar scrpt no package.json
+"scripts":{
+     "dev": "ts-node-dev src/server.ts"
+},
+
+--tratamento de erros
+yarn add express-async-errors
+
+--qq url acessar a requisicao do errors
+yarn add cors
+ yarn add @types/cors -D --tipagens
+
+
+ --bd postgres
+ user: superuser
+ senha: superuser123
+port: 5432
+
+yarn add prisma
+yarn add @prisma/client
+
+npx prisma init
+npx prisma migrate dev --name init
+npx prisma generate
+
+
+--configurar o .env
+
+--lib of dcrypt
+yarn add bcryptjs
+yarn add @types/bcryptjs -D
+
+
+--Passo a Passo models:
+
+-1-criar Service
+-2-criar Controler
+-3-criar rota
+
+
+--Instalar o JWT
+yarn add jsonwebtoken
+yarn add @types/jsonwebtoken -D
+
+--criar variável de ambiente https://www.md5hashgenerator.com/
+senha: MatheusSouzaPizza
+
+--instalar para acessa variáveis de ambiente
+yarn add dotenv
+
+
+caso queira acrescentar um atributo no request, tipo user id, é preciso adicionar um @types criando manualmente a tipagem comindex.d.ts
+e depois vai no tsconfig e habilita o typesroots
+
+
+instalar modal:
+yarn add react-modal
+

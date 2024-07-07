@@ -1,0 +1,125 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Approval {
+  id          Int       @id @default(autoincrement())
+  number      String
+  name        String
+  category    Category   @relation(fields: [categoryId], references: [id])
+  categoryId  Int
+  description String?
+  value       Float
+  createdBy   User       @relation(fields: [createdById], references: [id])
+  createdById Int
+  createdAt   DateTime   @default(now())
+  Process     Process[]
+}
+
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  createdBy   User       @relation(fields: [createdById], references: [id])
+  createdById Int
+  createdAt   DateTime   @default(now())
+  Approval    Approval[]
+}
+
+model Process {
+  id                   Int       @id @default(autoincrement())
+  approval             Approval  @relation(fields: [approvalId], references: [id])
+  approvalId           Int
+  departmentFrom       Department @relation("from", fields: [departmentFromId], references: [id])
+  departmentFromId     Int
+  departmentTo         Department @relation("to", fields: [departmentToId], references: [id])
+  departmentToId       Int
+  roleFrom             RoleEnum
+  roleTo               RoleEnum
+  executedBy           User       @relation("executedBy", fields: [executedById], references: [id])
+  executedById         Int
+  userTo               User?      @relation("userTo", fields: [userToId], references: [id])
+  userToId             Int?
+  comment              String?
+  action               ActionEnum
+  status               ProcessStatusEnum
+  processedAt          DateTime   @default(now())
+  ActivityLog          ActivityLog[]
+}
+
+model User {
+  id                    Int       @id @default(autoincrement())
+  name                  String
+  email                 String    @unique
+  password              String
+  file                  Bytes?
+  role                  RoleEnum
+  createdAt             DateTime  @default(now())
+  department            Department @relation(fields: [departmentId], references: [id])
+  departmentId          Int
+  Approval              Approval[]
+  Category              Category[]
+  ProcessExecuted       Process[] @relation("executedBy")
+  ProcessTo             Process[] @relation("userTo")
+  DepartmentApproval    Department? @relation("approvalDirector")
+  ActivityLogs          ActivityLog[]
+  Notifications         Notification[]
+}
+
+model Department {
+  id                  Int       @id @default(autoincrement())
+  name                String
+  code                String
+  approvalDirector    User?     @relation("approvalDirector", fields: [approvalDirectorId], references: [id])
+  approvalDirectorId  Int?      @unique
+  ProcessFrom         Process[] @relation("from")
+  ProcessTo           Process[] @relation("to")
+  User                User[]
+}
+
+model ActivityLog {
+  id          Int       @id @default(autoincrement())
+  process     Process   @relation(fields: [processId], references: [id])
+  processId   Int
+  action      String
+  user        User      @relation(fields: [userId], references: [id])
+  userId      Int
+  timestamp   DateTime  @default(now())
+  description String?
+}
+
+model Notification {
+  id          Int       @id @default(autoincrement())
+  user        User      @relation(fields: [userId], references: [id])
+  userId      Int
+  message     String
+  read        Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+}
+
+enum RoleEnum {
+  Employee
+  Manager
+  Director
+  Accounting
+  CFO
+}
+
+enum ActionEnum {
+  Approved
+  Rejected
+  Cancelled
+  NotExecuted
+}
+
+enum ProcessStatusEnum {
+  Pending
+  InProgress
+  Completed
+  Cancelled
+}
