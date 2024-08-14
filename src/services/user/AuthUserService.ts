@@ -9,32 +9,39 @@ interface AuthRequest {
 
 class AuthUserService {
     async execute({ email, password }: AuthRequest) {
-        // verificar se o email existe
+        // Verificar se o email existe
         const user = await prismaClient.user.findFirst({
             where: {
                 email: email
             }
         });
+
         if (!user) {
-            throw new Error("User/password incorrect!");
+            throw new Error("User or password incorrect!"); // Mensagem de erro genérica
         }
 
-        // verificar senha
+        // Verificar senha
         const passwordMatch = await compare(password, user.password);
-
+        
         if (!passwordMatch) {
-            throw new Error("User/password incorrect!");
+            throw new Error("User or password incorrect!"); // Mensagem de erro genérica
         }
 
-        // gerar token JWT
+        // Verificar se JWT_SECRET está definido
+        const jwtSecret = process.env.JWT_SECRET;
+        if (!jwtSecret) {
+            throw new Error("JWT secret not defined in environment variables");
+        }
+
+        // Gerar token JWT
         const token = sign(
             {
                 name: user.name,
                 email: user.email
             },
-            process.env.JWT_SECRET as string, // garante que JWT_SECRET é uma string
+            jwtSecret,
             {
-                subject: user.id.toString(), // converte user.id para string
+                subject: user.id.toString(), // Converte user.id para string
                 expiresIn: '30d'
             }
         );

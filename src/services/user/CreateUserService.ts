@@ -53,7 +53,6 @@ class CreateUserService {
         if (errors.length > 0) {
             throw new Error(errors.join("\n")); // Junta todos os erros em uma string
         }
-
         const passwordHash = await hash(password, 8);
 
         // Se não houver erros, prossegue com a criação do usuário
