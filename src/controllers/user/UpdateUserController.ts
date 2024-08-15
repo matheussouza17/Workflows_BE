@@ -11,7 +11,6 @@ class UpdateUserController {
         const user_id = Number(req.params);
 
         if (Number(id) !== user_id) {
-            console.log('Here')
             const hasPermission = await permissionUpdateUser.execute(user_id, Number(id));
             if (!hasPermission) {
                 return res.status(403).json({ error: "You do not have permission to update this user" });
