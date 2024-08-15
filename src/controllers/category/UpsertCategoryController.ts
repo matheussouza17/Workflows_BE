@@ -4,8 +4,9 @@ import { verify } from 'jsonwebtoken';
 
 class UpsertCategoryController {
     async handle(req: Request, res: Response) {
-        const { id, name, description } = req.body;
+        const { name, description } = req.body;
         const authHeader = req.headers.authorization;
+        const { id } = req.params; 
 
         if (!authHeader) {
             return res.status(401).json({ error: "Token is missing!" });
@@ -16,11 +17,11 @@ class UpsertCategoryController {
         try {
             const decodedToken = verify(token, process.env.JWT_SECRET as string);
             const { sub: userId } = decodedToken as { sub: string };
-
+            
             const upsertCategoryService = new UpsertCategoryService();
 
             const category = await upsertCategoryService.execute({
-                id,
+                id:Number(id),
                 name,
                 description,
                 userid: parseInt(userId) // convertendo para número, se necessário

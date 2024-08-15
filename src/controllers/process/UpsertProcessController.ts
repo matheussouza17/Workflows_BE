@@ -4,8 +4,9 @@ import { verify } from 'jsonwebtoken';
 
 class UpsertProcessController {
     async handle(req: Request, res: Response) {
-        const { id, approvalId, departmentFromId, departmentToId, roleFrom, roleTo, userToId, comment, action, status } = req.body;
+        const { approvalId, departmentFromId, departmentToId, roleFrom, roleTo, userToId, comment, action, status } = req.body;
         const authHeader = req.headers.authorization;
+        const { id } = req.params; 
 
         if (!authHeader) {
             return res.status(401).json({ error: "Token is missing!" });
@@ -18,9 +19,9 @@ class UpsertProcessController {
             const { sub: userId } = decodedToken as { sub: string };
 
             const upsertProcessService = new UpsertProcessService();
-
+            
             const processData = await upsertProcessService.execute({
-                id,
+                id: Number(id),
                 approvalId,
                 departmentFromId,
                 departmentToId,

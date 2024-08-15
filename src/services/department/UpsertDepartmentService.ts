@@ -59,7 +59,7 @@ class UpsertDepartmentService {
                     }
                 });
             }
-
+            
             return department;
 
         } catch (error) {

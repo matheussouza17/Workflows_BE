@@ -8,7 +8,7 @@ class UpdateUserController {
         const file = req.file?.buffer;
         const updateUserService = new UpdateUserService();
         const permissionUpdateUser = new PermissionUpdateUser();
-        const user_id = Number(req.user_id);
+        const user_id = Number(req.params);
 
         if (Number(id) !== user_id) {
             console.log('Here')

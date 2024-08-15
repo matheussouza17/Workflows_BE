@@ -4,8 +4,9 @@ import { verify } from 'jsonwebtoken';
 
 class UpsertApprovalController {
     async handle(req: Request, res: Response) {
-        const { id, number, name, categoryId, description, value } = req.body;
+        const { number, name, categoryId, description, value } = req.body;
         const authHeader = req.headers.authorization;
+        const { id } = req.params; 
 
         if (!authHeader) {
             return res.status(401).json({ error: "Token is missing!" });
@@ -20,7 +21,7 @@ class UpsertApprovalController {
             const upsertApprovalService = new UpsertApprovalService();
 
             const approval = await upsertApprovalService.execute({
-                id,
+                id:Number(id),
                 number,
                 name,
                 categoryId,

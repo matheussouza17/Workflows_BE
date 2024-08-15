@@ -4,9 +4,9 @@ import { verify } from 'jsonwebtoken';
 
 class UpsertActivityLogController {
     async handle(req: Request, res: Response) {
-        const { id, processId, action, description } = req.body;
+        const { processId, action, description } = req.body;
         const authHeader = req.headers.authorization;
-
+        const { id } = req.params; 
         if (!authHeader) {
             return res.status(401).json({ error: "Token is missing!" });
         }
@@ -20,7 +20,7 @@ class UpsertActivityLogController {
             const upsertActivityLogService = new UpsertActivityLogService();
 
             const activityLog = await upsertActivityLogService.execute({
-                id,
+                id:Number(id),
                 processId,
                 action,
                 userId: parseInt(userId), // convertendo para número, se necessário
