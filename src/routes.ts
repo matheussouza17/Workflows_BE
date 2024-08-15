@@ -19,7 +19,7 @@ const upload = multer(); // Configuração básica do multer para lidar com uplo
 router.post('/users', upload.single('file'), new CreateUserController().handle);
 router.post('/session', new AuthUserController().handle);
 router.get('/me', isAuthenticated, new DetailUserController().handle);
-router.put('/users', isAuthenticated, upload.single('file'), new UpdateUserController().handle);
+router.put('/users/:id', isAuthenticated, upload.single('file'), new UpdateUserController().handle);
 
 // ROTAS DEPARTMENT
 router.post('/departments', isAuthenticated, new UpsertDepartmentController().handle);
