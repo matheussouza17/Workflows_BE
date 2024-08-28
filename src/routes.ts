@@ -5,6 +5,7 @@ import { AuthUserController } from './controllers/user/AuthUserController';
 import { DetailUserController } from './controllers/user/DetailUserController';
 import { UpdateUserController } from "./controllers/user/UpdateUserController";
 import { UpsertDepartmentController } from "./controllers/department/UpsertDepartmentController";
+import { GetDepartmentController } from "./controllers/department/GetDepartmentController";
 import { UpsertCategoryController } from "./controllers/category/UpsertCategoryController";
 import { UpsertApprovalController } from "./controllers/approval/UpsertApprovalController";
 import { UpsertProcessController } from "./controllers/process/UpsertProcessController";
@@ -24,6 +25,7 @@ router.put('/users/:id', isAuthenticated, upload.single('file'), new UpdateUserC
 // ROTAS DEPARTMENT
 router.post('/departments', isAuthenticated, new UpsertDepartmentController().handle);
 router.put('/departments/:id', isAuthenticated, new UpsertDepartmentController().handle);
+router.get('/departments/:id?/:code?', isAuthenticated, new GetDepartmentController().handle);
 
 // ROTAS CATEGORY
 router.post('/categories', isAuthenticated, new UpsertCategoryController().handle);
