@@ -7,6 +7,7 @@ import { UpdateUserController } from "./controllers/user/UpdateUserController";
 import { UpsertDepartmentController } from "./controllers/department/UpsertDepartmentController";
 import { GetDepartmentController } from "./controllers/department/GetDepartmentController";
 import { UpsertCategoryController } from "./controllers/category/UpsertCategoryController";
+import { GetCategoryController } from "./controllers/category/GetCategoryController";
 import { UpsertApprovalController } from "./controllers/approval/UpsertApprovalController";
 import { UpsertProcessController } from "./controllers/process/UpsertProcessController";
 import { UpsertActivityLogController } from "./controllers/activity/UpsertActivityLogController";
@@ -30,6 +31,7 @@ router.get('/departments/:id?/:code?', isAuthenticated, new GetDepartmentControl
 // ROTAS CATEGORY
 router.post('/categories', isAuthenticated, new UpsertCategoryController().handle);
 router.put('/categories/:id', isAuthenticated, new UpsertCategoryController().handle);
+router.get('/categories/:id?', isAuthenticated, new GetCategoryController().handle);
 
 // ROTAS APPROVAL
 router.post('/approvals', isAuthenticated, new UpsertApprovalController().handle);

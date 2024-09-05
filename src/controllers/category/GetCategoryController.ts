@@ -1,10 +1,10 @@
 import { Response, Request } from "express";
-import { GetDepartmentService } from '../../services/department/GetDepartmentService';
+import { GetCategoryService } from '../../services/category/GetCategoryService';
 
-class GetDepartmentController {
+class GetCategoryController {
     async handle(req: Request, res: Response) {
-        const getDepartmentService = new GetDepartmentService();
-        const { id, code } = req.params;
+        const getCategoryService = new GetCategoryService();
+        const { id } = req.params;
 
         // Extraindo o token do cabeçalho de autorização
         const authHeader = req.headers.authorization;
@@ -15,17 +15,16 @@ class GetDepartmentController {
 
         try {
             // Verificação e conversão de ID para número, se fornecido
-            const departmentId = id ? Number(id) : undefined;
-            if (departmentId && isNaN(departmentId)) {
+            const categoryId = id ? Number(id) : undefined;
+            if (categoryId && isNaN(categoryId)) {
                 return res.status(400).json({ error: "Invalid ID format!" });
             }
 
-            const departments = await getDepartmentService.execute({
-                id: departmentId,
-                code: code
+            const categories = await getCategoryService.execute({
+                id: categoryId
             });
 
-            return res.json(departments);
+            return res.json(categories);
 
         } catch (error) {
             return res.status(500).json({ error: "Internal server error!" });
@@ -33,4 +32,4 @@ class GetDepartmentController {
     }
 }
 
-export { GetDepartmentController };
+export { GetCategoryController };
