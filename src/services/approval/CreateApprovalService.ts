@@ -10,7 +10,7 @@ interface ApprovalRequest {
     createdById: number;
 }
 
-class UpsertApprovalService {
+class CreateApprovalService {
     async execute({ id, number, name, categoryId, description, value, createdById }: ApprovalRequest) {
         if (!number || !name || !categoryId || !value || !createdById) {
             throw new Error("All fields are mandatory except description.");
@@ -18,35 +18,7 @@ class UpsertApprovalService {
 
         try {
             let approval;
-
-            if (id) {
-                const existingApproval = await prismaClient.approval.findUnique({
-                    where: { id }
-                });
-
-                if (!existingApproval) {
-                    throw new Error(`Approval with id: ${id} not found`);
-                }
-
-                approval = await prismaClient.approval.update({
-                    where: { id: id },
-                    data: {
-                        number,
-                        name,
-                        categoryId,
-                        description,
-                        value,
-                        createdById
-                    },
-                    select: {
-                        id: true,
-                        number: true,
-                        name: true,
-                        description: true,
-                        value: true
-                    }
-                });
-            } else {
+            
                 approval = await prismaClient.approval.create({
                     data: {
                         number,
@@ -64,7 +36,6 @@ class UpsertApprovalService {
                         value: true
                     }
                 });
-            }
 
             return approval;
 
@@ -74,4 +45,4 @@ class UpsertApprovalService {
     }
 }
 
-export { UpsertApprovalService };
+export { CreateApprovalService };

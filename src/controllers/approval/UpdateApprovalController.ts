@@ -1,8 +1,8 @@
 import { Response, Request } from "express";
-import { UpsertApprovalService } from '../../services/approval/UpsertApprovalService';
+import { UpdateApprovalService } from '../../services/approval/UpdateApprovalService';
 import { verify } from 'jsonwebtoken';
 
-class UpsertApprovalController {
+class UpdateApprovalController {
     async handle(req: Request, res: Response) {
         const { number, name, categoryId, description, value } = req.body;
         const authHeader = req.headers.authorization;
@@ -13,12 +13,15 @@ class UpsertApprovalController {
         }
 
         const [, token] = authHeader.split(' ');
+        if(!id){
+            return res.status(401).json({ error: "Id is missing!" });
+        }
 
         try {
             const decodedToken = verify(token, process.env.JWT_SECRET as string);
             const { sub: userId } = decodedToken as { sub: string };
 
-            const upsertApprovalService = new UpsertApprovalService();
+            const upsertApprovalService = new UpdateApprovalService();
 
             const approval = await upsertApprovalService.execute({
                 id:Number(id),
@@ -27,7 +30,7 @@ class UpsertApprovalController {
                 categoryId,
                 description,
                 value,
-                createdById: parseInt(userId) // convertendo para número, se necessário
+                createdById: Number(userId) 
             });
 
             return res.json(approval);
@@ -38,4 +41,4 @@ class UpsertApprovalController {
     }
 }
 
-export { UpsertApprovalController };
+export { UpdateApprovalController };

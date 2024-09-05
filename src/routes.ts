@@ -8,7 +8,9 @@ import { UpsertDepartmentController } from "./controllers/department/UpsertDepar
 import { GetDepartmentController } from "./controllers/department/GetDepartmentController";
 import { UpsertCategoryController } from "./controllers/category/UpsertCategoryController";
 import { GetCategoryController } from "./controllers/category/GetCategoryController";
-import { UpsertApprovalController } from "./controllers/approval/UpsertApprovalController";
+import { UpdateApprovalController } from "./controllers/approval/UpdateApprovalController";
+import { CreateApprovalController } from "./controllers/approval/CreateApprovalController";
+//import {} 
 import { UpsertProcessController } from "./controllers/process/UpsertProcessController";
 import { UpsertActivityLogController } from "./controllers/activity/UpsertActivityLogController";
 import { UpsertNotificationController } from "./controllers/notification/UpsertNotificationController";
@@ -34,8 +36,8 @@ router.put('/categories/:id', isAuthenticated, new UpsertCategoryController().ha
 router.get('/categories/:id?', isAuthenticated, new GetCategoryController().handle);
 
 // ROTAS APPROVAL
-router.post('/approvals', isAuthenticated, new UpsertApprovalController().handle);
-router.put('/approvals/:id', isAuthenticated, new UpsertApprovalController().handle);
+router.post('/approvals', isAuthenticated, new CreateApprovalController().handle);
+router.put('/approvals/:id', isAuthenticated, new UpdateApprovalController().handle);
 
 // ROTAS PROCESS
 router.post('/processes', isAuthenticated, new UpsertProcessController().handle);
