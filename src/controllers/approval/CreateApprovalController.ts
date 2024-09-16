@@ -1,5 +1,6 @@
 import { Response, Request } from "express";
 import { CreateApprovalService } from '../../services/approval/CreateApprovalService';
+import { CreateProcessService } from '../../services/process/CreateProcessService';
 import { verify } from 'jsonwebtoken';
 
 class CreateApprovalController {
@@ -20,8 +21,7 @@ class CreateApprovalController {
 
             const createApprovalService = new CreateApprovalService();
 
-            const approval = await createApprovalService.execute({
-                id:Number(id),
+            let approval = await createApprovalService.execute({
                 number,
                 name,
                 categoryId,
@@ -29,6 +29,10 @@ class CreateApprovalController {
                 value,
                 createdById: Number(userId) 
             });
+            const createProcessService = new CreateProcessService();
+            // const processCreated = await createProcessService.execute({
+            //      approvalId: 3
+            // });
 
             return res.json(approval);
 

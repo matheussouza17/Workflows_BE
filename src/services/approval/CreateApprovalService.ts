@@ -11,7 +11,7 @@ interface ApprovalRequest {
 }
 
 class CreateApprovalService {
-    async execute({ id, number, name, categoryId, description, value, createdById }: ApprovalRequest) {
+    async execute({ number, name, categoryId, description, value, createdById }: ApprovalRequest) {
         if (!number || !name || !categoryId || !value || !createdById) {
             throw new Error("All fields are mandatory except description.");
         }
@@ -35,7 +35,7 @@ class CreateApprovalService {
                         description: true,
                         value: true
                     }
-                });
+                });  
 
             return approval;
 
