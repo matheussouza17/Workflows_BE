@@ -1,14 +1,14 @@
 import { Response, Request } from "express";
 import { UpdateProcessService } from '../../services/process/UpdateProcessService';
-import {GetUpdateDepartmentAndRole} from '../../services/process/GetUpdateDepartmentAndRole';
 import { verify } from 'jsonwebtoken';
 
 class UpsertProcessController {
     async handle(req: Request, res: Response) {
-        const { approvalId, comment, action, status } = req.body;
+        const { approvalId, comment, action } = req.body; // status removido, pois é calculado internamente
         const authHeader = req.headers.authorization;
         const { id } = req.params; 
 
+        // Verificar se o token de autorização foi fornecido
         if (!authHeader) {
             return res.status(401).json({ error: "Token is missing!" });
         }
@@ -16,32 +16,33 @@ class UpsertProcessController {
         const [, token] = authHeader.split(' ');
 
         try {
+            // Decodificar o token JWT para extrair o userId
             const decodedToken = verify(token, process.env.JWT_SECRET as string);
             const { sub: userId } = decodedToken as { sub: string };
 
-            const upsertProcessService = new UpdateProcessService();
-            const getUpdateDepartmentAndRole = new GetUpdateDepartmentAndRole();
-            
-            
-            
-            const processData = await upsertProcessService.execute({
-                id: Number(id),
-                approvalId,
-                departmentFromId,
-                departmentToId,
-                roleFrom,
-                roleTo,
-                executedById: parseInt(userId), // convertendo para número, se necessário
-                userToId,
-                comment,
-                action,
-                status
+            // Verificar se todos os campos obrigatórios foram enviados
+            if (!approvalId || !action) {
+                return res.status(400).json({ error: "Approval ID and action are required!" });
+            }
+
+            const updateProcessService = new UpdateProcessService();            
+
+            // Chamar o serviço para atualizar o processo
+            const processData = await updateProcessService.execute({
+                id: Number(id), // O id do processo
+                approvalId,     // ID da aprovação
+                executedById: parseInt(userId), // ID do usuário executando a ação
+                comment,        // Comentário opcional
+                action          // Ação executada (Approved, Rejected, etc.)
+                // O status será gerenciado dentro do serviço
             });
 
+            // Retornar o dado do processo atualizado como resposta
             return res.json(processData);
 
         } catch (error) {
-            return res.status(401).json({ error: "Invalid token!" });
+            console.error(error);
+            return res.status(401).json({ error: "Invalid token or internal error!" });
         }
     }
 }

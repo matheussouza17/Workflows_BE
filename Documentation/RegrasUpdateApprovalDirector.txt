@@ -11,6 +11,8 @@ departmentToId = ID do departamento de Accounting
 status = InProgress
 roleTo = Accounting
 userToId = null
+
+
 Ação: Rejected
 
 O processo é devolvido ao criador original do processo.
@@ -32,6 +34,8 @@ departmentToId = null
 roleTo = null
 userToId = null
 2. Utilizadores com role de "Accounting":
+
+
 Ação: Approved
 
 O processo é concluído.
@@ -43,6 +47,8 @@ Exemplo de atualização:
 status = Completed
 roleTo = null
 userToId = null
+
+
 Ação: Rejected
 
 O processo é devolvido ao criador original.
