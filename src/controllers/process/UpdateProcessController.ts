@@ -1,10 +1,11 @@
 import { Response, Request } from "express";
-import { UpsertProcessService } from '../../services/process/UpsertProcessService';
+import { UpdateProcessService } from '../../services/process/UpdateProcessService';
+import {GetUpdateDepartmentAndRole} from '../../services/process/GetUpdateDepartmentAndRole';
 import { verify } from 'jsonwebtoken';
 
 class UpsertProcessController {
     async handle(req: Request, res: Response) {
-        const { approvalId, departmentFromId, departmentToId, roleFrom, roleTo, userToId, comment, action, status } = req.body;
+        const { approvalId, comment, action, status } = req.body;
         const authHeader = req.headers.authorization;
         const { id } = req.params; 
 
@@ -18,7 +19,10 @@ class UpsertProcessController {
             const decodedToken = verify(token, process.env.JWT_SECRET as string);
             const { sub: userId } = decodedToken as { sub: string };
 
-            const upsertProcessService = new UpsertProcessService();
+            const upsertProcessService = new UpdateProcessService();
+            const getUpdateDepartmentAndRole = new GetUpdateDepartmentAndRole();
+            
+            
             
             const processData = await upsertProcessService.execute({
                 id: Number(id),

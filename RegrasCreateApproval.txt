@@ -1,0 +1,43 @@
+Regras de Negócio para Criação de Processos:
+1. Utilizadores com role de "Employee":
+Quando o criador da aprovação tem o papel de Employee, o sistema atribui o processo a um gestor (Manager) do mesmo departamento.
+
+Departamento de Origem (departmentFromId): O departamento do utilizador que criou a aprovação.
+Departamento de Destino (departmentToId): O departamento do Manager associado ao departamento do criador.
+Papel de Origem (roleFrom): O papel do utilizador que criou a aprovação, neste caso, Employee.
+Papel de Destino (roleTo): O papel do Manager que será responsável pela próxima etapa do processo.
+Utilizador Executado (executedById): O utilizador que criou a aprovação.
+Utilizador de Destino (userToId): O Manager que receberá o processo.
+Ação (action): Definida como 'NotExecuted', pois o processo ainda não foi executado.
+Status (status): Definido como 'Pending', aguardando execução.
+Exemplo de atualização:
+
+departmentFromId: ID do departamento do utilizador Employee.
+departmentToId: ID do departamento do Manager.
+roleFrom: 'Employee'.
+roleTo: 'Manager'.
+executedById: ID do utilizador Employee.
+userToId: ID do utilizador Manager.
+action: 'NotExecuted'.
+status: 'Pending'.
+2. Utilizadores com role de "Director" ou "Manager":
+Quando o criador da aprovação tem o papel de Director ou Manager, o processo é direcionado para o departamento de Accounting, refletindo a hierarquia organizacional e a necessidade de aprovações contábeis.
+
+Departamento de Origem (departmentFromId): O departamento do utilizador que criou a aprovação.
+Departamento de Destino (departmentToId): O departamento de Accounting.
+Papel de Origem (roleFrom): O papel do utilizador que criou a aprovação, que será Director ou Manager.
+Papel de Destino (roleTo): O papel de Accounting, que é responsável pela próxima etapa do processo.
+Utilizador Executado (executedById): O utilizador que criou a aprovação.
+Utilizador de Destino (userToId): O responsável pelo departamento de Accounting.
+Ação (action): Definida como 'NotExecuted', pois o processo ainda não foi executado.
+Status (status): Definido como 'InProgress', pois o processo já está em andamento após a criação.
+Exemplo de atualização:
+
+departmentFromId: ID do departamento do utilizador Director ou Manager.
+departmentToId: ID do departamento de Accounting.
+roleFrom: 'Director' ou 'Manager'.
+roleTo: 'Accounting'.
+executedById: ID do utilizador Director ou Manager.
+userToId: ID do utilizador responsável pelo departamento de Accounting.
+action: 'NotExecuted'.
+status: 'InProgress'.

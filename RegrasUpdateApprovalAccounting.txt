@@ -1,0 +1,45 @@
+1. Utilizadores com role de "Accounting":
+
+
+Ação: Approved
+
+Quando um utilizador com o papel Accounting aprova o processo:
+O processo é considerado concluído.
+O status do processo é atualizado para Completed.
+O campo roleTo é definido como null, já que não há próximo papel a assumir.
+O campo userToId também é definido como null, indicando que nenhum outro utilizador será designado para esse processo.
+Exemplo de atualização:
+
+status = Completed
+roleTo = null
+userToId = null
+
+
+
+Ação: Rejected
+
+Quando um utilizador com o papel Accounting rejeita o processo:
+O processo é devolvido ao criador original do processo.
+O status do processo é atualizado para Pending.
+O campo userToId será null, pois o processo foi rejeitado e está pendente de nova ação do criador ou de outro utilizador relevante.
+Exemplo de atualização:
+
+departmentToId = ID do departamento do criador do processo
+status = Pending
+userToId = null (aguardando ação futura)
+
+
+
+
+Ação: Cancelled
+
+Quando um utilizador com o papel Accounting cancela o processo:
+O status do processo é atualizado para Cancelled.
+O processo não é movido para outro departamento, e o campo departmentToId é definido como null.
+Não há designação de novo utilizador ou papel, então os campos roleTo e userToId são definidos como null.
+Exemplo de atualização:
+
+status = Cancelled
+departmentToId = null
+roleTo = null
+userToId = null

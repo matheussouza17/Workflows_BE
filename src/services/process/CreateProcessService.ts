@@ -62,7 +62,7 @@ class CreateProcessService {
                     executedById: userCreated.id,
                     userToId: userManager.id,
                     action: 'NotExecuted',
-                    status: 'Pending'                    
+                    status: 'InProgress'                    
                 }
                 
             })

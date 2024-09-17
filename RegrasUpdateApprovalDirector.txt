@@ -1,0 +1,65 @@
+1. Utilizadores com role de "Director" ou "Manager":
+Ação: Approved
+
+O processo é movido para o departamento Accounting.
+O status do processo é atualizado para InProgress.
+O próximo papel (role) a assumir o processo é Accounting.
+O campo userToId será null (nenhum utilizador específico designado).
+Exemplo de atualização:
+
+departmentToId = ID do departamento de Accounting
+status = InProgress
+roleTo = Accounting
+userToId = null
+Ação: Rejected
+
+O processo é devolvido ao criador original do processo.
+O status é atualizado para Pending.
+O campo userToId é atualizado com o ID do utilizador que criou a aprovação.
+Exemplo de atualização:
+
+departmentToId = ID do departamento do criador do processo
+status = Pending
+userToId = ID do criador do processo
+Ação: Cancelled
+
+O status do processo é atualizado para Cancelled.
+O processo não é movido para outro departamento (departmentToId será null).
+Exemplo de atualização:
+
+status = Cancelled
+departmentToId = null
+roleTo = null
+userToId = null
+2. Utilizadores com role de "Accounting":
+Ação: Approved
+
+O processo é concluído.
+O status do processo é atualizado para Completed.
+O campo roleTo é definido como null (nenhum papel adicional necessário).
+O campo userToId será null.
+Exemplo de atualização:
+
+status = Completed
+roleTo = null
+userToId = null
+Ação: Rejected
+
+O processo é devolvido ao criador original.
+O status é atualizado para Pending.
+O campo userToId será null, já que o processo foi rejeitado e está pendente.
+Exemplo de atualização:
+
+departmentToId = ID do departamento do criador do processo
+status = Pending
+userToId = null
+Ação: Cancelled
+
+O status do processo é atualizado para Cancelled.
+O processo não é movido para outro departamento (departmentToId será null).
+Exemplo de atualização:
+
+status = Cancelled
+departmentToId = null
+roleTo = null
+userToId = null
