@@ -11,8 +11,7 @@ import { GetCategoryController } from "./controllers/category/GetCategoryControl
 import { UpdateApprovalController } from "./controllers/approval/UpdateApprovalController";
 import { CreateApprovalController } from "./controllers/approval/CreateApprovalController";
 import { GetApprovalListController } from "./controllers/approval/GetApprovalListController";
-//import {} 
-import { UpsertProcessController } from "./controllers/process/UpsertProcessController";
+import { UpsertProcessController } from "./controllers/process/UpdateProcessController";
 import { UpsertActivityLogController } from "./controllers/activity/UpsertActivityLogController";
 import { UpsertNotificationController } from "./controllers/notification/UpsertNotificationController";
 import { isAuthenticated } from './middlewares/isAuthenticated';
