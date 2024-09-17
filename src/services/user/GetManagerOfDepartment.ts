@@ -6,7 +6,7 @@ class GetManagerOfDepartment {
         let userManager = await prismaClient.user.findFirst({
             where: {
                 departmentId: id,
-                role: 'Director' || 'Manager'
+                role: { in: ['Director', 'Manager'] }
             },
             select:{
                 id: true,

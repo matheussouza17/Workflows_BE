@@ -14,7 +14,7 @@ interface ProcessRequest {
     status: 'Pending' |'InProgress'|'Completed'|'Cancelled';
 }
 
-class UpsertProcessService {
+class UpdateProcessService {
     async execute({ id, approvalId, departmentFromId, departmentToId, roleFrom, roleTo, executedById, userToId, comment, action, status }: ProcessRequest) {
         if (!approvalId || !departmentFromId || !departmentToId || !roleFrom || !roleTo || !executedById || !action || !status) {
             throw new Error("All fields are mandatory except comment and userToId.");
@@ -22,8 +22,6 @@ class UpsertProcessService {
 
         try {
             let process;
-
-            if (id) {
                 const existingProcess = await prismaClient.process.findUnique({
                     where: { id }
                 });
@@ -60,35 +58,7 @@ class UpsertProcessService {
                         status: true
                     }
                 });
-            } else {
-                process = await prismaClient.process.create({
-                    data: {
-                        approvalId,
-                        departmentFromId,
-                        departmentToId,
-                        roleFrom,
-                        roleTo,
-                        executedById,
-                        userToId,
-                        comment,
-                        action,
-                        status
-                    },
-                    select: {
-                        id: true,
-                        approvalId: true,
-                        departmentFromId: true,
-                        departmentToId: true,
-                        roleFrom: true,
-                        roleTo: true,
-                        executedById: true,
-                        userToId: true,
-                        comment: true,
-                        action: true,
-                        status: true
-                    }
-                });
-            }
+            
 
             return process;
 
@@ -98,4 +68,4 @@ class UpsertProcessService {
     }
 }
 
-export { UpsertProcessService };
+export { UpdateProcessService };

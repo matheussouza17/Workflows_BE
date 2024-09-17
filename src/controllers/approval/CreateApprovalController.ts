@@ -30,11 +30,13 @@ class CreateApprovalController {
                 createdById: Number(userId) 
             });
             const createProcessService = new CreateProcessService();
-            // const processCreated = await createProcessService.execute({
-            //      approvalId: 3
-            // });
+            const processCreated = await createProcessService.execute(approval.id);
 
-            return res.json(approval);
+            return res.json({
+                approval,
+                processCreated
+            });
+            
 
         } catch (error) {
             return res.status(401).json({ error: "Invalid token!" });
