@@ -2,7 +2,6 @@ import prismaClient from '../../prisma';
 import { GetManagerOfDepartment } from '../user/GetManagerOfDepartment';
 
 interface ProcessRequest {
-    id: number;
     approvalId: number;
     departmentFromId?: number;
     departmentToId?: number;
@@ -16,7 +15,7 @@ interface ProcessRequest {
 }
 
 class UpdateProcessService {
-    async execute({ id, approvalId, executedById, comment, action }: ProcessRequest) {
+    async execute({ approvalId, executedById, comment, action }: ProcessRequest) {
         const getManagerOfDepartment = new GetManagerOfDepartment();
 
         let approval = await prismaClient.approval.findFirst({
@@ -42,14 +41,15 @@ class UpdateProcessService {
         if (!userCreated) {
             throw new Error('User who created approval not found');
         }
-
+        
         let departmentFromId, departmentToId, roleFrom, roleTo, userToId, status;
 
         if (userCurrent.role === 'Director' || userCurrent.role === 'Manager') {
             departmentFromId = userCurrent.departmentId;
             roleFrom = 'Director';
             if (action === 'Approved') {
-                departmentToId = getManagerOfDepartment.accounting();
+                departmentToId = (await getManagerOfDepartment.accounting()).departmentId;
+                console.log(departmentToId)
                 status = 'InProgress';
                 roleTo = 'Accounting';
                 userToId = null;
@@ -65,9 +65,9 @@ class UpdateProcessService {
             departmentFromId = userCurrent.departmentId;
             roleFrom = 'Accounting';
             if (action === 'Approved') {
-                departmentToId = getManagerOfDepartment.accounting();
+                departmentToId = (await getManagerOfDepartment.accounting()).departmentId;
                 status = 'Completed';
-                roleTo = null;
+                roleTo = 'Employee';
                 userToId = null;
             } else if (action === 'Rejected') {
                 departmentToId = userCreated.departmentId;
@@ -82,16 +82,18 @@ class UpdateProcessService {
         }
 
         try {
-            const existingProcess = await prismaClient.process.findUnique({
-                where: { id },
+            const existingProcess = await prismaClient.process.findFirst({
+                where: { 
+                    approvalId: approvalId
+                },
             });
 
             if (!existingProcess) {
-                throw new Error(`Process with id: ${id} not found`);
+                throw new Error(`Process with id: ${approvalId} not found`);
             }
-
+            
             const process = await prismaClient.process.update({
-                where: { id: id },
+                where: { id: existingProcess.id },
                 data: {
                     approvalId,
                     departmentFromId,
@@ -118,7 +120,7 @@ class UpdateProcessService {
                     status: true,
                 },
             });
-
+            
             return process;
         } catch (error) {
             if (error instanceof Error) {

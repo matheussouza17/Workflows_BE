@@ -1,12 +1,12 @@
 import { Response, Request } from "express";
 import { UpdateProcessService } from '../../services/process/UpdateProcessService';
 import { verify } from 'jsonwebtoken';
+import {UpsertActivityLogService} from '../../services/activity/UpsertActivityLogService'
 
-class UpsertProcessController {
+class UpdateProcessController {
     async handle(req: Request, res: Response) {
         const { approvalId, comment, action } = req.body; // status removido, pois é calculado internamente
         const authHeader = req.headers.authorization;
-        const { id } = req.params; 
 
         // Verificar se o token de autorização foi fornecido
         if (!authHeader) {
@@ -24,12 +24,15 @@ class UpsertProcessController {
             if (!approvalId || !action) {
                 return res.status(400).json({ error: "Approval ID and action are required!" });
             }
+            
+            const updateProcessService = new UpdateProcessService();  
+            const upsertActivityLogService = new UpsertActivityLogService();  
+            
+            await upsertActivityLogService.execute(approvalId); 
 
-            const updateProcessService = new UpdateProcessService();            
 
             // Chamar o serviço para atualizar o processo
             const processData = await updateProcessService.execute({
-                id: Number(id), // O id do processo
                 approvalId,     // ID da aprovação
                 executedById: parseInt(userId), // ID do usuário executando a ação
                 comment,        // Comentário opcional
@@ -47,4 +50,4 @@ class UpsertProcessController {
     }
 }
 
-export { UpsertProcessController };
+export { UpdateProcessController };

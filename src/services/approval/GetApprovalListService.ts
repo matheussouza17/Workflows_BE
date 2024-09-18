@@ -37,9 +37,6 @@ class GetApprovalListService {
                     createdBy: {
                         departmentId: userCurrent.departmentId // Busca usuários do mesmo departamento
                     }
-                },
-                include: {
-                    createdBy: true // Inclui informações sobre o usuário que criou a aprovação
                 }
             });        
         }

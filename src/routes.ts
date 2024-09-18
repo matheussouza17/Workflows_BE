@@ -11,7 +11,7 @@ import { GetCategoryController } from "./controllers/category/GetCategoryControl
 import { UpdateApprovalController } from "./controllers/approval/UpdateApprovalController";
 import { CreateApprovalController } from "./controllers/approval/CreateApprovalController";
 import { GetApprovalListController } from "./controllers/approval/GetApprovalListController";
-import { UpsertProcessController } from "./controllers/process/UpdateProcessController";
+import { UpdateProcessController } from "./controllers/process/UpdateProcessController";
 import { UpsertActivityLogController } from "./controllers/activity/UpsertActivityLogController";
 import { UpsertNotificationController } from "./controllers/notification/UpsertNotificationController";
 import { isAuthenticated } from './middlewares/isAuthenticated';
@@ -41,8 +41,8 @@ router.put('/approvals/:id', isAuthenticated, new UpdateApprovalController().han
 router.get('/approvals/:name?:number?:categoryId?', isAuthenticated, new GetApprovalListController().handle);
 
 // ROTAS PROCESS
-router.post('/processes', isAuthenticated, new UpsertProcessController().handle);
-router.put('/processes/:id', isAuthenticated, new UpsertProcessController().handle);
+router.post('/processes', isAuthenticated, new UpdateProcessController().handle);
+router.put('/processes/', isAuthenticated, new UpdateProcessController().handle);
 
 // ROTAS ACTIVITY LOG
 router.post('/activity-logs', isAuthenticated, new UpsertActivityLogController().handle);
