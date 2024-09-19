@@ -11,6 +11,7 @@ import { GetCategoryController } from "./controllers/category/GetCategoryControl
 import { UpdateApprovalController } from "./controllers/approval/UpdateApprovalController";
 import { CreateApprovalController } from "./controllers/approval/CreateApprovalController";
 import { GetApprovalListController } from "./controllers/approval/GetApprovalListController";
+import {GetApprovalDetailController} from './controllers/approval/GetApprovalDetailController'
 import { UpdateProcessController } from "./controllers/process/UpdateProcessController";
 import { UpsertActivityLogController } from "./controllers/activity/UpsertActivityLogController";
 import { UpsertNotificationController } from "./controllers/notification/UpsertNotificationController";
@@ -39,6 +40,7 @@ router.get('/categories/:id?', isAuthenticated, new GetCategoryController().hand
 router.post('/approvals', isAuthenticated, new CreateApprovalController().handle);
 router.put('/approvals/:id', isAuthenticated, new UpdateApprovalController().handle);
 router.get('/approvals/:name?:number?:categoryId?', isAuthenticated, new GetApprovalListController().handle);
+router.get('/approval/:id?', isAuthenticated, new GetApprovalDetailController().handle);
 
 // ROTAS PROCESS
 router.post('/processes', isAuthenticated, new UpdateProcessController().handle);

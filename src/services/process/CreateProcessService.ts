@@ -51,7 +51,7 @@ class CreateProcessService {
             })
         }
         else if (userCreated.role === 'Director' || userCreated.role === 'Manager') {
-            userManager = await getManagerOfDepartment.accounting();
+            userManager = (await getManagerOfDepartment.accounting()).departmentId;
             process = await prismaClient.process.create({
                 data:{
                     approvalId: approvalId,
