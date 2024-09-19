@@ -9,7 +9,7 @@ interface ActivityLogRequest {
 }
 
 class GetActivityLogServiceByProcessId {
-    async execute({processId}:ActivityLogRequest) {
+    async execute(processId) {
         let activity = prismaClient.activityLog.findMany({
             where:{
                 processId: processId

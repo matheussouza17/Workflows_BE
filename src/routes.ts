@@ -15,43 +15,45 @@ import {GetApprovalDetailController} from './controllers/approval/GetApprovalDet
 import { UpdateProcessController } from "./controllers/process/UpdateProcessController";
 import { UpsertActivityLogController } from "./controllers/activity/UpsertActivityLogController";
 import { UpsertNotificationController } from "./controllers/notification/UpsertNotificationController";
+import {GetActivityLogController} from './controllers/activity/GetActivityLogController'
 import { isAuthenticated } from './middlewares/isAuthenticated';
 
 const router = Router();
 const upload = multer(); // Configuração básica do multer para lidar com uploads de arquivos em memória
 
 // ROTAS USER
-router.post('/users', upload.single('file'), new CreateUserController().handle);
+router.post('/user', upload.single('file'), new CreateUserController().handle);
 router.post('/session', new AuthUserController().handle);
 router.get('/me', isAuthenticated, new DetailUserController().handle);
-router.put('/users/:id', isAuthenticated, upload.single('file'), new UpdateUserController().handle);
+router.put('/user/:id', isAuthenticated, upload.single('file'), new UpdateUserController().handle);
 
 // ROTAS DEPARTMENT
-router.post('/departments', isAuthenticated, new UpsertDepartmentController().handle);
-router.put('/departments/:id', isAuthenticated, new UpsertDepartmentController().handle);
-router.get('/departments/:id?/:code?', isAuthenticated, new GetDepartmentController().handle);
+router.post('/department', isAuthenticated, new UpsertDepartmentController().handle);
+router.put('/department/:id', isAuthenticated, new UpsertDepartmentController().handle);
+router.get('/department/:id?/:code?', isAuthenticated, new GetDepartmentController().handle);
 
 // ROTAS CATEGORY
-router.post('/categories', isAuthenticated, new UpsertCategoryController().handle);
-router.put('/categories/:id', isAuthenticated, new UpsertCategoryController().handle);
-router.get('/categories/:id?', isAuthenticated, new GetCategoryController().handle);
+router.post('/category', isAuthenticated, new UpsertCategoryController().handle);
+router.put('/category/:id', isAuthenticated, new UpsertCategoryController().handle);
+router.get('/category/:id?', isAuthenticated, new GetCategoryController().handle);
 
 // ROTAS APPROVAL
-router.post('/approvals', isAuthenticated, new CreateApprovalController().handle);
-router.put('/approvals/:id', isAuthenticated, new UpdateApprovalController().handle);
+router.post('/approval', isAuthenticated, new CreateApprovalController().handle);
+router.put('/approval/:id', isAuthenticated, new UpdateApprovalController().handle);
 router.get('/approvals/:name?:number?:categoryId?', isAuthenticated, new GetApprovalListController().handle);
 router.get('/approval/:id?', isAuthenticated, new GetApprovalDetailController().handle);
 
 // ROTAS PROCESS
-router.post('/processes', isAuthenticated, new UpdateProcessController().handle);
-router.put('/processes/', isAuthenticated, new UpdateProcessController().handle);
+router.post('/process', isAuthenticated, new UpdateProcessController().handle);
+router.put('/process/', isAuthenticated, new UpdateProcessController().handle);
 
 // ROTAS ACTIVITY LOG
-router.post('/activity-logs', isAuthenticated, new UpsertActivityLogController().handle);
-router.put('/activity-logs/:id', isAuthenticated, new UpsertActivityLogController().handle);
+//router.post('/activity-log', isAuthenticated, new UpsertActivityLogController().handle);
+//router.put('/activity-log/:id', isAuthenticated, new UpsertActivityLogController().handle);
+router.get('/activity-log/:processid?', isAuthenticated, new GetActivityLogController().handle);
 
 // ROTAS NOTIFICATION
-router.post('/notifications', isAuthenticated, new UpsertNotificationController().handle);
-router.put('/notifications/:id', isAuthenticated, new UpsertNotificationController().handle);
+//router.post('/notification', isAuthenticated, new UpsertNotificationController().handle);
+//router.put('/notification/:id', isAuthenticated, new UpsertNotificationController().handle);
 
 export { router };
