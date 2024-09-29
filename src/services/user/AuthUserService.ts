@@ -37,12 +37,13 @@ class AuthUserService {
         const token = sign(
             {
                 name: user.name,
-                email: user.email
+                email: user.email,
+                role: user.role
             },
             jwtSecret,
             {
                 subject: user.id.toString(), // Converte user.id para string
-                expiresIn: '30d'
+                expiresIn: '1h'
             }
         );
 
