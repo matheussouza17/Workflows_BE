@@ -18,7 +18,6 @@ class UpsertDepartmentController {
             name,
             approvalDirectorId
         });
-        console.log(department);
         return res.json(department);
 
     }

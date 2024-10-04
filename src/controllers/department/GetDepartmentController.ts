@@ -24,7 +24,6 @@ class GetDepartmentController {
                 id: departmentId,
                 code: code
             });
-
             return res.json(departments);
 
         } catch (error) {
