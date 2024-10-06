@@ -66,7 +66,7 @@ model User {
   Category              Category[]
   ProcessExecuted       Process[] @relation("executedBy")
   ProcessTo             Process[] @relation("userTo")
-  DepartmentApproval    Department? @relation("approvalDirector")
+  DepartmentsApproval   Department[] @relation("approvalDirector") // Mudança aqui para relação `one-to-many`
   ActivityLogs          ActivityLog[]
   Notifications         Notification[]
 }
@@ -76,11 +76,12 @@ model Department {
   name                String
   code                String
   approvalDirector    User?     @relation("approvalDirector", fields: [approvalDirectorId], references: [id])
-  approvalDirectorId  Int?      @unique
+  approvalDirectorId  Int?
   ProcessFrom         Process[] @relation("from")
   ProcessTo           Process[] @relation("to")
   User                User[]
 }
+
 
 model ActivityLog {
   id          Int       @id @default(autoincrement())

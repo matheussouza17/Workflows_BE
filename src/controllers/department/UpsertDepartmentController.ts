@@ -7,7 +7,7 @@ class UpsertDepartmentController {
         const upsertDepartmentService = new UpsertDepartmentService();
         const authHeader = req.headers.authorization;
         const { id } = req.params; 
-
+        
         if (!authHeader) {
             return res.status(401).json({ error: "Token is missing!" });
         }

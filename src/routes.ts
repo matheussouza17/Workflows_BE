@@ -17,6 +17,7 @@ import { UpsertActivityLogController } from "./controllers/activity/UpsertActivi
 import { UpsertNotificationController } from "./controllers/notification/UpsertNotificationController";
 import {GetActivityLogController} from './controllers/activity/GetActivityLogController'
 import { isAuthenticated } from './middlewares/isAuthenticated';
+import {GetUserController} from './controllers/user/GetUserController'
 
 const router = Router();
 const upload = multer(); // Configuração básica do multer para lidar com uploads de arquivos em memória
@@ -26,6 +27,7 @@ router.post('/user', upload.single('file'), new CreateUserController().handle);
 router.post('/session', new AuthUserController().handle);
 router.get('/me', isAuthenticated, new DetailUserController().handle);
 router.put('/user/:id', isAuthenticated, upload.single('file'), new UpdateUserController().handle);
+router.get('/users', isAuthenticated, new GetUserController().handle);
 
 // ROTAS DEPARTMENT
 router.post('/department', isAuthenticated, new UpsertDepartmentController().handle);

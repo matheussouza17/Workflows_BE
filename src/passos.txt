@@ -67,3 +67,7 @@ e depois vai no tsconfig e habilita o typesroots
 instalar modal:
 yarn add react-modal
 
+
+npx prisma migrate dev --name remove_unique_constraint
+
+
