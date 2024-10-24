@@ -69,5 +69,6 @@ yarn add react-modal
 
 
 npx prisma migrate dev --name remove_unique_constraint
+npx prisma generate
 
 

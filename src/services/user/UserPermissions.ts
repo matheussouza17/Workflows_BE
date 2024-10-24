@@ -14,7 +14,7 @@ class PermissionUpdateUser {
             throw new Error("User not found");
         }
 
-        if (userManager.role === 'CFO') {
+        if (userManager.role === 'CFO' || userManager.role === 'Accounting' ) {
             return true;
         }
 
@@ -30,4 +30,24 @@ class PermissionUpdateUser {
     }
 }
 
-export { PermissionUpdateUser };
+class PermissionGetUser {
+    async execute(userManagerId: number): Promise<boolean> {
+        const userManager = await prismaClient.user.findFirst({
+            where: { id: userManagerId }
+        });
+        
+
+        if (!userManager) {
+            throw new Error("User not found");
+        }
+
+        if (userManager.role === 'CFO' || userManager.role === 'Director' || userManager.role === 'Manager'|| userManager.role ==='Accounting') {
+            return true;
+        }
+
+        return false;
+    }
+}
+
+
+export { PermissionUpdateUser, PermissionGetUser};
