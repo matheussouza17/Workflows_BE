@@ -7,7 +7,6 @@ class UpdateProcessController {
     async handle(req: Request, res: Response) {
         const { approvalId, comment, action } = req.body; // status removido, pois é calculado internamente
         const authHeader = req.headers.authorization;
-
         // Verificar se o token de autorização foi fornecido
         if (!authHeader) {
             return res.status(401).json({ error: "Token is missing!" });
